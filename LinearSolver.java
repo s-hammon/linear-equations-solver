@@ -1,32 +1,46 @@
 package solver;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Scanner;
 
 public class LinearSolver {
-    private static double x;
-    private static double y;
-    private static double[][] a;
 
-    public double oneVariable(double a, double b) {
-        return b / a;
-    }
+    public void solve(String input, String output) throws Exception {
+        //reads matrix from file
+        Scanner sc = new Scanner(new BufferedReader(new FileReader(input)));
+        int size = Integer.parseInt(sc.nextLine());
 
-    public double[] twoVariable(double[] eq1, double[] eq2) {
-        y = (eq2[2] - eq1[2] * eq2[0] / eq1[0])
-                / (eq2[1] - eq1[1] * eq2[0] / eq1[0]);
+        double[][] a = new double[size][size + 1];
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < a.length; i++) {
+                String[] row = sc.nextLine().trim().split(" ");
+                for (int j = 0; j < row.length; j++) {
+                    a[i][j] = Double.parseDouble(row[j]);
+                }
+            }
+        }
 
-        x = oneVariable(eq1[0], (eq1[2] - eq1[1] * y));
+        sc.close();
 
-        return new double[]{x, y};
+        //get solution to system of linear equations
+        double[] solution = gaussOperations(a, size);
+
+        //writes solution to file
+        FileWriter fileWriter = new FileWriter(output);
+        for (double s : solution) {
+            fileWriter.write(s + "\n");
+        }
+
+        fileWriter.close();
     }
 
     private static double[] gaussOperations(double[][] matrix, int size) {
-        int i, j, k = 0, c, flag = 0, m = 0;
-        double pro = 0;
+        int i, j, k, c;
         double[] solution = new double[size];
 
+        //convert matrix to echelon form
         for (i = 0; i < size; i++) {
             if (matrix[i][i] == 0) {
                 c = 1;
@@ -35,7 +49,6 @@ public class LinearSolver {
                     c++;
 
                 if ((i + c) == size) {
-                    flag = 1;
                     break;
                 }
 
@@ -48,6 +61,7 @@ public class LinearSolver {
 
             for (j = 0; j < size; j++) {
                 if (i != j) {
+
                     double p = matrix[j][i] / matrix[i][i];
 
                     for (k = 0; k <= size; k++) {
@@ -57,9 +71,11 @@ public class LinearSolver {
             }
         }
 
+        //put solutions into array of size N to print to file
         for (int x = 0; x < solution.length; x++) {
             solution[x] = matrix[x][size] / matrix[x][x];
         }
+
         return solution;
     }
 }
