@@ -1,7 +1,7 @@
 package solver;
 
 public class Matrix {
-    private final Row[] matrix;
+    private Row[] matrix;
     private boolean noSolutions = false;
     private boolean infiniteSolutions = false;
     private String[] solution;
@@ -124,7 +124,7 @@ public class Matrix {
     }
 
     private void reduceToOne(int index) {
-        //reduces coefficient to 1
+        //reduces diagonal coefficients to 1
         Row oldRow = this.getRowAtIndex(index);
 
         //does nothing if 1 (no action needed) or 0 (cannot be changed)
@@ -184,7 +184,7 @@ public class Matrix {
     void findUniqueSolutions() {
         solution = new String[countVariables];
         for (int i = 0; i < countVariables; i++) {
-            solution[i] = String.valueOf(this.matrix[i].getValue(countVariables));
+            solution[i] = this.matrix[i].getValue(countVariables).toString();
         }
     }
 }

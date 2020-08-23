@@ -3,8 +3,8 @@ package solver;
 import java.util.Arrays;
 
 public class Row {
-    private final Complex[] row;
-    private final int countVariables;
+    private Complex[] row;
+    private int countVariables;
 
     Row(Complex... coefficients) {
         this.row = coefficients;
@@ -47,7 +47,8 @@ public class Row {
 
     boolean isAllZero() {
         for (int i = 0; i < countVariables; i++) {
-            if (!row[i].equals(Complex.ZERO)) return false;
+            if (!row[i].equals(Complex.ZERO))
+                return false;
         }
         return true;
     }

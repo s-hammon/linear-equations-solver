@@ -16,7 +16,7 @@ public class Complex {
 
     Complex(String str) {
         this.real = Complex.parseReal(str);
-        this.real = Complex.parseImag(str);
+        this.imag = Complex.parseImag(str);
     }
 
     private double getReal() {
@@ -36,10 +36,12 @@ public class Complex {
     }
 
     private static double parseReal(String str) {
-        if (!Complex.isImag(str)) return Double.parseDouble(str);
+        if (!Complex.isImag(str))
+            return Double.parseDouble(str);
 
         boolean hasOperator = str.contains("+") || str.contains("-");
-        if (!hasOperator) return 0;
+        if (!hasOperator)
+            return 0;
 
         String operator = str.contains("-") ? "-" : "[+]";
         String real = str.split(operator)[0];
@@ -47,7 +49,8 @@ public class Complex {
     }
 
     private static double parseImag(String str) {
-        if (!Complex.isImag(str)) return Double.parseDouble(str);
+        if (!Complex.isImag(str))
+            return 0;
 
         boolean hasMinus = str.contains("-");
         boolean hasOperator = str.contains("+") || hasMinus;
@@ -99,7 +102,8 @@ public class Complex {
         Complex numerator = this.multiply(conjugate);
         Complex denominator = divisor.multiply(conjugate);
 
-        if (denominator.getReal() == 0) throw new ArithmeticException();
+        if (denominator.getReal() == 0)
+            throw new ArithmeticException();
 
         double newReal = numerator.getReal() / denominator.getReal();
         double newImag = numerator.getImag() / denominator.getReal();

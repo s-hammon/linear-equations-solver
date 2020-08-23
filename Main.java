@@ -41,6 +41,7 @@ public class Main {
 
         controller.setCommand(new FindUniqueSolutionCommand(matrix));
         File writeTo = Paths.get(output).toFile();
+
         try (PrintWriter printWriter = new PrintWriter(writeTo)) {
             if (!"Unique".equals(solutionType)) {
                 System.out.println(solutionType);
